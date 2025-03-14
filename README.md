@@ -27,16 +27,16 @@ git clone https://github.com/Artiishock/PortfolioOverview.git
 #### Перейдите в директорию проекта
 ```bash
 cd PortfolioOverview
-
-# Установите зависимости
+```
+#### Установите зависимости
 ```bash
 npm install
 ```
-# запустите проект 
+#### запустите проект 
 ```bash
 npm start
 ```
-# Для сборки проекта в production-режиме выполните:
+#### Для сборки проекта в production-режиме выполните:
 ```bash
 npm run build
 ```
