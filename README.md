@@ -20,23 +20,27 @@
 
 Убедитесь, что у вас установлен [Node.js](https://nodejs.org/) и [npm](https://www.npmjs.com/). Затем выполните следующие команды:
 
+#### Клонируйте репозиторий
 ```bash
-# Клонируйте репозиторий
 git clone https://github.com/Artiishock/PortfolioOverview.git
-
-# Перейдите в директорию проекта
+```
+#### Перейдите в директорию проекта
+```bash
 cd PortfolioOverview
 
 # Установите зависимости
+```bash
 npm install
-
+```
 # запустите проект 
+```bash
 npm start
-
+```
 # Для сборки проекта в production-режиме выполните:
+```bash
 npm run build
+```
+![то как выглятид сайт ](src/components/assets/main.png)
 
-![то как выглятид сайт ](assets/main.png)
-
-![то как выглятид сайт  c активом](assets/activ.png)
+![то как выглятид сайт  c активом](src/components/assets/activ.png)
 
