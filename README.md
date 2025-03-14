@@ -42,5 +42,5 @@ npm run build
 ```
 ![то как выглятид сайт ](src/components/assets/main.png)
 
-![то как выглятид сайт  c активом](src/components/assets/activ.png)
+![то как выглятид сайт  c активом](src/components/assets/Activ.png)
 
