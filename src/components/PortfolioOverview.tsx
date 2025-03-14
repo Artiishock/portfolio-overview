@@ -1,81 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { addAsset, removeAsset } from '../store/slice';
 import { FixedSizeList as List } from 'react-window';
 import './PortfolioOverview.scss';
 
-
-interface Asset {
-  id: string;
-  name: string;
-  price: number;
-  change24h: number;
-}
-
 const PortfolioOverview: React.FC = () => {
   const dispatch = useDispatch();
   const assets = useSelector((state: RootState) => state.portfolio.assets);
+  const [name, setName] = useState('');
   const [quantity, setQuantity] = useState(0);
-  const [selectedAsset, setSelectedAsset] = useState<string>('');
-  const [availableAssets, setAvailableAssets] = useState<Asset[]>([]);
-
-  // Подключение к WebSocket для получения данных о активах
-  useEffect(() => {
-    const socket = new WebSocket('wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker/bnbusdt@ticker/neousdt@ticker');
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const stream = data.stream;
-      const price = parseFloat(data.data.c);
-      const change24h = parseFloat(data.data.P);
-
-      setAvailableAssets((prevAssets) => {
-        const assetId = stream.split('@')[0].toLowerCase();
-        const assetIndex = prevAssets.findIndex((a) => a.id === assetId);
-
-        if (assetIndex !== -1) {
-          // Обновляем существующий актив
-          const updatedAssets = [...prevAssets];
-          updatedAssets[assetIndex] = {
-            ...updatedAssets[assetIndex],
-            price,
-            change24h,
-          };
-          return updatedAssets;
-        } else {
-          // Добавляем новый актив
-          return [
-            ...prevAssets,
-            {
-              id: assetId,
-              name: assetId.toUpperCase(),
-              price,
-              change24h,
-            },
-          ];
-        }
-      });
-    };
-
-    return () => {
-      socket.close();
-    };
-  }, []);
 
   const handleAddAsset = () => {
-    const asset = availableAssets.find((a) => a.id === selectedAsset);
-    if (asset && quantity > 0) {
-      dispatch(addAsset({
-        id: asset.id,
-        name: asset.name,
-        quantity,
-        price: asset.price,
-        change24h: asset.change24h,
-      }));
-      setSelectedAsset('');
-      setQuantity(0);
-    }
+    const newAsset = {
+      id: name.toLowerCase(),
+      name,
+      quantity,
+      price: 0,
+      change24h: 0,
+    };
+    dispatch(addAsset(newAsset));
+    setName('');
+    setQuantity(0);
   };
 
   const handleRemoveAsset = (id: string) => {
@@ -107,15 +53,12 @@ const PortfolioOverview: React.FC = () => {
         <div className="empty-portfolio">
           <p>Нет активов в вашем портфеле. Добавьте что–нибудь, чтобы начать!</p>
           <div className="form">
-            <select
-              value={selectedAsset}
-              onChange={(e) => setSelectedAsset(e.target.value)}
-            >
-              <option value="">Выберите актив</option>
-              {availableAssets.map((asset) => (
-                <option key={asset.id} value={asset.id}>{asset.name}</option>
-              ))}
-            </select>
+            <input
+              type="text"
+              placeholder="Asset Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <input
               type="number"
               placeholder="Quantity"
@@ -128,15 +71,12 @@ const PortfolioOverview: React.FC = () => {
       ) : (
         <>
           <div className="form">
-            <select
-              value={selectedAsset}
-              onChange={(e) => setSelectedAsset(e.target.value)}
-            >
-              <option value="">Выберите актив</option>
-              {availableAssets.map((asset) => (
-                <option key={asset.id} value={asset.id}>{asset.name}</option>
-              ))}
-            </select>
+            <input
+              type="text"
+              placeholder="Asset Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <input
               type="number"
               placeholder="Quantity"
@@ -167,4 +107,4 @@ const PortfolioOverview: React.FC = () => {
   );
 };
 
-export default PortfolioOverview;
+export default PortfolioOverview; 

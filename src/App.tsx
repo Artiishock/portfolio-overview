@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import PortfolioOverview from './components/PortfolioOverview';
-import './websocket'; // Импортируем WebSocket
+import './websocket'; 
 
 const App: React.FC = () => {
   return (
